@@ -1,27 +1,10 @@
-#include <complex>
 #include <cassert>
+#include <complex>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <tuple>
 
 using namespace std;
-
-
-/*
-    private fun hsl(h: Double, s: Double, l: Double): String {
-        fun fracMod(x: Double, n: Int): Double {
-            val y = truncate(x)
-            return (y.toInt() % n).toDouble() + (x - y)
-        }
-        val a = s * min(l, 1 - l)
-        fun k(n: Int): Double = fracMod(n + h / 30.0, 12)
-        fun f(n: Int): Double = l - a * max(-1.0, min(min(k(n) - 3.0, 9.0 - k(n)), 1.0))
-        fun g(n: Int) = (255.0 * max(0.0, min(255.0, f(n)))).toInt()
-        return "#%02x%02x%02x".format(g(0), g(8), g(4))
-    }
-    */
-
 
 tuple<int, int, int> hsl(double h, double s, double l)
 {
@@ -48,6 +31,12 @@ int main(int argc, char* argv[])
     const auto PI = 3.1415;
     const auto OFFSET_X = -0.7;
     const auto OFFSET_Y = 0.0;
+
+    if (argc != 4) {
+        cout << "usage: mandelbrot 60 20 12" << endl;
+        return 1;
+    }
+
     auto size = atoi(argv[1]);
     auto scale = atoi(argv[2]);
     auto kmult = atoi(argv[3]);
