@@ -42,14 +42,6 @@ tuple<int, int, int> hsl(double h, double s, double l)
     return make_tuple(g(0), g(8), g(4));
 }
 
-string showColour(tuple<int, int, int> colour)
-{
-    ostringstream stream;
-    auto [r, g, b] = colour;
-    stream << "rgb(" << r << ", " << g << ", " << b << ")";
-    return stream.str();
-}
-
 int main(int argc, char* argv[])
 {
     const auto MAX_K = 500;
@@ -58,6 +50,7 @@ int main(int argc, char* argv[])
     const auto OFFSET_Y = 0.0;
     auto size = atoi(argv[1]);
     auto scale = atoi(argv[2]);
+    auto kmult = atoi(argv[3]);
 
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size * 2; ++j) {
@@ -76,7 +69,7 @@ int main(int argc, char* argv[])
             if (k == MAX_K) {
                 cout << " ";
             } else {
-                auto l = 0.1 + 0.9 * min(1.0, double(k * 20) / MAX_K);
+                auto l = 0.1 + 0.9 * min(1.0, double(k * kmult) / MAX_K);
                 auto h =  (arg(c) + PI) * 360.0 / (2 * PI);
                 auto [r, g, b] = hsl(h, 1.0, l);
                 cout << "\033[48;2;" << r << ";" << g << ";" << b << "m \033[0m";
