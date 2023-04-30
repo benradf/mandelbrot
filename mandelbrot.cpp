@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
     const auto OFFSET_Y = 0.0;
 
     if (argc != 4) {
-        cout << "usage: mandelbrot 60 20 12" << endl;
+        cout << "usage: mandelbrot 3000 1000 12" << endl;
         return 1;
     }
 
@@ -122,36 +122,37 @@ int main(int argc, char* argv[])
     auto width = size; // * 2;
     auto height = size;
 
-    vector<tuple<uint8_t, uint8_t, uint8_t>> pixels(width * height);
+    for (int frame = 0; frame < 360; ++frame) {
+        vector<tuple<uint8_t, uint8_t, uint8_t>> pixels(width * height);
 
-    for (int i = 0; i < height; ++i) {
-        for (int j = 0; j < width; ++j) {
-            auto c = complex(
-                    OFFSET_X + (double(j) - width / 2.0) / double(scale), // / 2.0,
-                    OFFSET_Y + (double(i) - height / 2.0) / double(scale)
-            );
-            auto x = complex(0.0, 0.0);
-            int k = 0;
-            for (; k < MAX_K; ++k) {
-                x = x * x + c;
-                if (abs(x) > pow(10.0, 12.0)) {
-                    break;
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                auto c = complex(
+                        OFFSET_X + (double(j) - width / 2.0) / double(scale), // / 2.0,
+                        OFFSET_Y + (double(i) - height / 2.0) / double(scale)
+                );
+                auto x = complex(0.0, 0.0);
+                int k = 0;
+                for (; k < MAX_K; ++k) {
+                    x = x * x + c;
+                    if (abs(x) > pow(10.0, 12.0)) {
+                        break;
+                    }
+                }
+                if (k < MAX_K) {
+                    auto l = 0.1 + 0.9 * min(1.0, double(k * kmult) / MAX_K);
+                    auto h =  (arg(c) + PI + frame) * 360.0 / (2 * PI);
+                    auto [r, g, b] = hsl(h, 1.0, l);
+                    pixels.at(i * width + j) = hsl(h, 1.0, l);
                 }
             }
-            if (k == MAX_K) {
-                //cout << " ";
-            } else {
-                auto l = 0.1 + 0.9 * min(1.0, double(k * kmult) / MAX_K);
-                auto h =  (arg(c) + PI) * 360.0 / (2 * PI);
-                auto [r, g, b] = hsl(h, 1.0, l);
-                //cout << "\033[48;2;" << r << ";" << g << ";" << b << "m \033[0m";
-                pixels.at(i * width + j) = hsl(h, 1.0, l);
-            }
         }
-        //cout << endl;
-    }
 
-    writeBitmap("mandelbrot.bmp", width, height, pixels);
+        char filename[256];
+        snprintf(filename, sizeof(filename), "mandelbrot-%03d.bmp", frame);
+        writeBitmap(filename, width, height, pixels);
+        cout << "rendered " << filename << endl;
+    }
 
     return 0;
 }
