@@ -5,20 +5,11 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    if (argc != 3) {
-        cout << "usage: mandelbrot SIZE SCALE" << endl;
-        return 1;
-    }
-
     auto size = atoi(argv[1]);
     auto scale = atoi(argv[2]);
 
-    cout << "size = " << size << endl;
-    cout << "scale = " << scale << endl;
-    cout << endl;
-
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
+    for (int j = 0; j < size; ++j) {
+        for (int i = size - 1; i >= 0; --i) {
             auto c = complex(
                     (double(j) - size / 2.0) / double(scale),
                     (double(i) - size / 2.0) / double(scale)
@@ -34,16 +25,13 @@ int main(int argc, char* argv[])
             if (k == 255) {
                 cout << " ";
             } else {
-                auto g = min(255, k * 15);
-                cout << "\033[38;2;0;" << g << ";0m*\033[0m";
+                auto b = min(255, k * 15);
+                cout << "\033[48;2;0;0;" << b << "m \033[0m";
             }
-            //cout << "c = " << c << ", k = " << k << endl;
         }
         cout << endl;
     }
 
-
-
-
     return 0;
 }
+
