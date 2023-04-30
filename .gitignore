@@ -2,3 +2,4 @@
 .sw?
 *.o
 /mandelbrot
+/mandelbrot.bmp

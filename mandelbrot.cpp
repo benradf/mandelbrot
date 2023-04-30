@@ -139,27 +139,19 @@ int main(int argc, char* argv[])
                 }
             }
             if (k == MAX_K) {
-                cout << " ";
+                //cout << " ";
             } else {
                 auto l = 0.1 + 0.9 * min(1.0, double(k * kmult) / MAX_K);
                 auto h =  (arg(c) + PI) * 360.0 / (2 * PI);
                 auto [r, g, b] = hsl(h, 1.0, l);
-                cout << "\033[48;2;" << r << ";" << g << ";" << b << "m \033[0m";
+                //cout << "\033[48;2;" << r << ";" << g << ";" << b << "m \033[0m";
+                pixels.at(i * width + j) = hsl(h, 1.0, l);
             }
         }
         cout << endl;
     }
 
-    pixels.emplace_back(255, 0, 0);
-    pixels.emplace_back(0, 255, 0);
-    pixels.emplace_back(0, 0, 255);
-    pixels.emplace_back(255, 255, 255);
-    writeBitmap("mandelbrot.bmp", 2, 2, pixels);
-
-    //for (int i = 0; i < pixels.size() * 3; ++i) {
-    //    auto p = reinterpret_cast<const uint8_t*>(pixels.data());
-    //    printf("%04x: %02x\n", i, p[i]);
-    //}
+    writeBitmap("mandelbrot.bmp", width, height, pixels);
 
     return 0;
 }
