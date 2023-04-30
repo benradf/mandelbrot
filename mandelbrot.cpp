@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
     auto scale = atoi(argv[2]);
     auto kmult = atoi(argv[3]);
 
-    auto width = size * 2;
+    auto width = size; // * 2;
     auto height = size;
 
     vector<tuple<uint8_t, uint8_t, uint8_t>> pixels(width * height);
@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             auto c = complex(
-                    OFFSET_X + (double(j) - width / 2.0) / double(scale) / 2.0,
+                    OFFSET_X + (double(j) - width / 2.0) / double(scale), // / 2.0,
                     OFFSET_Y + (double(i) - height / 2.0) / double(scale)
             );
             auto x = complex(0.0, 0.0);
@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
                 pixels.at(i * width + j) = hsl(h, 1.0, l);
             }
         }
-        cout << endl;
+        //cout << endl;
     }
 
     writeBitmap("mandelbrot.bmp", width, height, pixels);
