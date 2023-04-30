@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
                 int k = 0;
                 for (; k < MAX_K; ++k) {
                     x = x * x + c;
-                    if (abs(x) > pow(10.0, 12.0)) {
+                    if (real(x) > 2 || imag(x) > 2) {
                         break;
                     }
                 }
