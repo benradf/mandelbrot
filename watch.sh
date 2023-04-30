@@ -7,7 +7,7 @@ echo mandelbrot.cpp | entr bash -c '
 	echo
 	make mandelbrot
 	echo -e "\n\e[32mbuild successful\e[0m\n"
-	./mandelbrot 30 10 || echo -e "\n\e[31mfail\e[0m\n"
+	./mandelbrot 60 20 || echo -e "\n\e[31mfail\e[0m\n"
 '
 # 60 20
 	

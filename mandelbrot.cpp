@@ -1,5 +1,7 @@
-#include <iostream>
 #include <complex>
+#include <iostream>
+#include <sstream>
+#include <string>
 #include <tuple>
 
 using namespace std;
@@ -39,38 +41,48 @@ tuple<int, int, int> hsl(double h, double s, double l)
     return make_tuple(g(0), g(8), g(4));
 }
 
+string showColour(tuple<int, int, int> colour)
+{
+    ostringstream stream;
+    auto [r, g, b] = colour;
+    stream << "rgb(" << r << ", " << g << ", " << b << ")";
+    return stream.str();
+}
+
 int main(int argc, char* argv[])
 {
+    const auto MAX_K = 500;
+    const auto OFFSET_X = -0.7;
+    const auto OFFSET_Y = 0.0;
     auto size = atoi(argv[1]);
     auto scale = atoi(argv[2]);
-    const auto ITER_COUNT = 355;
 
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size * 2; ++j) {
             auto c = complex(
-                    (double(j) - size) / double(scale) / 2.0,
-                    (double(i) - size / 2.0) / double(scale)
+                    OFFSET_X + (double(j) - size) / double(scale) / 2.0,
+                    OFFSET_Y + (double(i) - size / 2.0) / double(scale)
             );
             auto x = complex(0.0, 0.0);
             int k = 0;
-            for (; k < ITER_COUNT; ++k) {
+            for (; k < MAX_K; ++k) {
                 x = x * x + c;
                 if (abs(x) > 1000000.0) {
                     break;
                 }
             }
-            if (k == ITER_COUNT) {
+            if (k == MAX_K) {
                 cout << " ";
             } else {
-                auto b = min(255, k * 15);
+                auto b = min(MAX_K, k * 10);
+                cout << "\033[48;2;0;0;" << b << "m \033[0m";
             }
-
-            auto [r, g, b] = k < ITER_COUNT ? hsl(double(k), 1.0, 0.7) : make_tuple(0, 0, 0);
-
-            cout << "\033[48;2;" << r << ";" << g << ";" << b << "m \033[0m";
         }
         cout << endl;
     }
+
+    //auto colour = hsl(100, 1.0, 0.5);
+    //cout << endl << showColour(colour) << endl;
 
     return 0;
 }
