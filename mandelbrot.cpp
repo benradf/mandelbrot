@@ -8,10 +8,10 @@ int main(int argc, char* argv[])
     auto size = atoi(argv[1]);
     auto scale = atoi(argv[2]);
 
-    for (int j = 0; j < size; ++j) {
-        for (int i = size - 1; i >= 0; --i) {
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size * 2; ++j) {
             auto c = complex(
-                    (double(j) - size / 2.0) / double(scale),
+                    (double(j) - size) / double(scale) / 2.0,
                     (double(i) - size / 2.0) / double(scale)
             );
             auto x = complex(0.0, 0.0);
