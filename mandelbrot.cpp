@@ -1,4 +1,5 @@
 #include <complex>
+#include <cassert>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -52,6 +53,7 @@ string showColour(tuple<int, int, int> colour)
 int main(int argc, char* argv[])
 {
     const auto MAX_K = 500;
+    const auto PI = 3.1415;
     const auto OFFSET_X = -0.7;
     const auto OFFSET_Y = 0.0;
     auto size = atoi(argv[1]);
@@ -67,22 +69,21 @@ int main(int argc, char* argv[])
             int k = 0;
             for (; k < MAX_K; ++k) {
                 x = x * x + c;
-                if (abs(x) > 1000000.0) {
+                if (abs(x) > pow(10.0, 12.0)) {
                     break;
                 }
             }
             if (k == MAX_K) {
                 cout << " ";
             } else {
-                auto b = min(MAX_K, k * 10);
-                cout << "\033[48;2;0;0;" << b << "m \033[0m";
+                auto l = 0.1 + 0.9 * min(1.0, double(k * 20) / MAX_K);
+                auto h =  (arg(c) + PI) * 360.0 / (2 * PI);
+                auto [r, g, b] = hsl(h, 1.0, l);
+                cout << "\033[48;2;" << r << ";" << g << ";" << b << "m \033[0m";
             }
         }
         cout << endl;
     }
-
-    //auto colour = hsl(100, 1.0, 0.5);
-    //cout << endl << showColour(colour) << endl;
 
     return 0;
 }
