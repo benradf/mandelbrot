@@ -9,7 +9,7 @@ echo mandelbrot.cpp | entr bash -c '
 	echo -e "\n\e[32mbuild successful\e[0m\n"
   echo rendering ...
 	time ./mandelbrot 300 100 12 || echo -e "\n\e[31mfail\e[0m\n"
-  fmpeg -i "mandelbrot-%03d.bmp" -r 60 mandelbrot.mp4
+  ffmpeg -i "mandelbrot-%03d.bmp" -r 60 mandelbrot.mp4
   mplayer -fs -loop 0 mandelbrot.mp4
 '
 	
